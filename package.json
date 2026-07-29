@@ -1,0 +1,36 @@
+{
+  "name": "pirecall-honcho-local-setup",
+  "version": "0.1.0",
+  "description": "Generate Honcho memory setup files for local Ollama or Honcho Cloud workflows.",
+  "keywords": [
+    "honcho",
+    "pi",
+    "memory",
+    "ollama",
+    "local-first"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vishn9893/honcho-local-setup.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vishn9893/honcho-local-setup/issues"
+  },
+  "homepage": "https://github.com/vishn9893/honcho-local-setup#readme",
+  "type": "commonjs",
+  "bin": {
+    "pirecall": "./bin/pirecall.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "scripts/",
+    "README.md",
+    "docker-compose.override.yml",
+    ".env.example"
+  ]
+}

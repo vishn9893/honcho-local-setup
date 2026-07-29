@@ -1,16 +1,17 @@
-# PiRecall Honcho Local Setup
+# PiRecall Honcho Setup
 
-Copy-ready local Honcho configuration for agent memory experiments: Honcho in Docker, Ollama for local models, and a Raspberry Pi or other LAN machine connecting to the Honcho API.
+Config generator and copy-ready local Honcho setup for Pi memory experiments. It supports both Honcho Cloud and a local Honcho + Ollama instance reachable from a Raspberry Pi or other LAN machine.
 
-This repository is not a Honcho fork. Use the official Honcho repository as the runtime, then copy these files into it as a small local setup layer.
+This repository is not a Honcho fork and does not replace the Pi extension. It is a companion setup package for `agneym/pi-honcho-memory`, which reads `HONCHO_API_KEY`, `HONCHO_URL`, workspace, peer, and session settings from environment variables or `~/.honcho/config.json`.
 
 ## Why this exists
 
 Coding agents often forget project context, preferences, and decisions between sessions. Honcho can act as a long-term memory service, while a local setup keeps the memory service and model calls on your own network for experiments.
 
-This setup is inspired by:
+This setup is inspired by and aligned with:
 
 - Honcho's Pi memory guide: https://honcho.dev/docs/v3/guides/community/pi-honcho-memory
+- The Pi memory extension: https://github.com/agneym/pi-honcho-memory
 - A local Honcho setup pattern: https://github.com/nidhi-singh02/honcho-local-setup
 
 ## What this setup assumes
@@ -25,8 +26,39 @@ This setup is inspired by:
 
 - `.env.example`: safe example values for a local Honcho + Ollama setup.
 - `docker-compose.override.yml`: exposes the Honcho API on the LAN and loads local env values into Honcho services.
+- `bin/pirecall.js`: dependency-free CLI for generating cloud or local Pi/Honcho config.
+- `lib/config-generator.js`: testable config generator used by the CLI.
 - `scripts/check-connectivity.ps1`: quick Windows/PowerShell connectivity checks from the host machine.
 - `scripts/check-connectivity.sh`: quick Bash connectivity checks for macOS, Linux, WSL, or Git Bash.
+
+## Package usage
+
+Install from this repo while it is in early development:
+
+```bash
+npm install -g github:vishn9893/honcho-local-setup
+```
+
+Generate local Honcho + local Pi extension config:
+
+```bash
+pirecall init --mode local --host-lan-ip 192.168.1.25 --out ./pirecall-out
+```
+
+This writes:
+
+- `.env.local`: server-side Honcho config for Docker + Ollama.
+- `docker-compose.override.yml`: exposes Honcho on `0.0.0.0:8000`.
+- `pi-honcho.env`: shell env vars for `agneym/pi-honcho-memory`.
+- `honcho-config.json`: content you can copy to `~/.honcho/config.json`.
+
+Generate cloud config instead:
+
+```bash
+pirecall init --mode cloud --honcho-api-key hch-v3-your-key --out ./pirecall-out
+```
+
+Cloud mode writes only the Pi extension config files. Local mode additionally writes the Honcho Docker/Ollama files.
 
 ## Quick start
 
@@ -69,6 +101,19 @@ http://192.168.1.25:8000
 ```
 
 `host.docker.internal` is only for Docker containers on the host machine calling Ollama on the host machine.
+
+For `agneym/pi-honcho-memory`, local mode points Pi at that LAN URL with:
+
+```bash
+export HONCHO_API_KEY=local-dev
+export HONCHO_URL=http://192.168.1.25:8000
+export HONCHO_WORKSPACE_ID=pi
+export HONCHO_PEER_NAME=user
+export HONCHO_AI_PEER=pi
+export HONCHO_SESSION_STRATEGY=repo
+```
+
+The dummy `local-dev` key is only for auth-disabled local demos. Hosted Honcho still needs a real API key.
 
 ## Verify
 

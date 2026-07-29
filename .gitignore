@@ -1,5 +1,8 @@
 .env.local
 .env
 *.log
+node_modules/
+pirecall-out/
+work/
 .DS_Store
 Thumbs.db

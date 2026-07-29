@@ -1,6 +1,7 @@
 .env.local
 .env
 *.log
+*.tgz
 node_modules/
 pirecall-out/
 work/

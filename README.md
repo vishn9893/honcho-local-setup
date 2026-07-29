@@ -156,7 +156,3 @@ AUTH_USE_AUTH=false
 That is acceptable only for a trusted local-network demo. If you expose Honcho outside your machine or LAN, turn authentication on and use a real JWT setup.
 
 Do not commit real API keys, production secrets, or private memory exports to this repository.
-
-## Name
-
-The working name for this local setup is **PiRecall**: small, direct, and tied to Raspberry Pi memory experiments.

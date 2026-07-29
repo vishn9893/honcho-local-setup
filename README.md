@@ -26,6 +26,7 @@ This setup is inspired by:
 - `.env.example`: safe example values for a local Honcho + Ollama setup.
 - `docker-compose.override.yml`: exposes the Honcho API on the LAN and loads local env values into Honcho services.
 - `scripts/check-connectivity.ps1`: quick Windows/PowerShell connectivity checks from the host machine.
+- `scripts/check-connectivity.sh`: quick Bash connectivity checks for macOS, Linux, WSL, or Git Bash.
 
 ## Quick start
 
@@ -87,7 +88,13 @@ curl http://YOUR_HOST_LAN_IP:8000/health
 
 If the LAN client cannot reach that URL, fix networking before debugging memory behavior.
 
-On Windows, you can also run:
+On macOS, Linux, WSL, or Git Bash for Windows, you can also run:
+
+```bash
+./scripts/check-connectivity.sh --host-lan-ip 192.168.1.25
+```
+
+On Windows PowerShell, you can run:
 
 ```powershell
 .\scripts\check-connectivity.ps1 -HostLanIp 192.168.1.25

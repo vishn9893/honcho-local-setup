@@ -21,6 +21,7 @@ test("buildLocalEnv emits current Honcho local Ollama config and disables auth f
   assert.match(env, /DERIVER_MODEL_CONFIG__OVERRIDES__BASE_URL=http:\/\/host\.docker\.internal:11434\/v1/);
   assert.match(env, /SUMMARY_MODEL_CONFIG__MODEL=qwen3\.5:27b/);
   assert.match(env, /EMBEDDING_MODEL_CONFIG__MODEL=qwen3-embedding:4b/);
+  assert.match(env, /EMBEDDING_VECTOR_DIMENSIONS=768/);
 });
 
 test("buildPiEnv emits cloud Honcho settings using pi-honcho-memory env names", () => {
@@ -83,6 +84,7 @@ test("buildCloudEnv emits cloud Honcho API settings", () => {
 test("buildLocalComposeOverride exposes Honcho on the requested LAN port", () => {
   const compose = buildLocalComposeOverride({ honchoPort: "9000" });
 
+  assert.match(compose, /scripts\/configure_embeddings\.py --yes/);
   assert.match(compose, /ports: !override/);
   assert.match(compose, /"0\.0\.0\.0:9000:8000"/);
   assert.match(compose, /host\.docker\.internal:host-gateway/);

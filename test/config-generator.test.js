@@ -10,16 +10,17 @@ const {
   parseArgs,
 } = require("../lib/config-generator");
 
-test("buildLocalEnv emits local Ollama defaults and disables auth for LAN demos", () => {
+test("buildLocalEnv emits current Honcho local Ollama config and disables auth for LAN demos", () => {
   const env = buildLocalEnv({
     llmModel: "qwen3.5:27b",
     embeddingModel: "qwen3-embedding:4b",
   });
 
   assert.match(env, /AUTH_USE_AUTH=false/);
-  assert.match(env, /OPENAI_BASE_URL=http:\/\/host\.docker\.internal:11434\/v1/);
-  assert.match(env, /LLM_MODEL=qwen3\.5:27b/);
-  assert.match(env, /EMBEDDING_MODEL=qwen3-embedding:4b/);
+  assert.match(env, /LLM_OPENAI_API_KEY=ollama/);
+  assert.match(env, /DERIVER_MODEL_CONFIG__OVERRIDES__BASE_URL=http:\/\/host\.docker\.internal:11434\/v1/);
+  assert.match(env, /SUMMARY_MODEL_CONFIG__MODEL=qwen3\.5:27b/);
+  assert.match(env, /EMBEDDING_MODEL_CONFIG__MODEL=qwen3-embedding:4b/);
 });
 
 test("buildPiEnv emits cloud Honcho settings using pi-honcho-memory env names", () => {
@@ -82,6 +83,7 @@ test("buildCloudEnv emits cloud Honcho API settings", () => {
 test("buildLocalComposeOverride exposes Honcho on the requested LAN port", () => {
   const compose = buildLocalComposeOverride({ honchoPort: "9000" });
 
+  assert.match(compose, /ports: !override/);
   assert.match(compose, /"0\.0\.0\.0:9000:8000"/);
   assert.match(compose, /host\.docker\.internal:host-gateway/);
 });

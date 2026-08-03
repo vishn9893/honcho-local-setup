@@ -20,7 +20,7 @@ function Test-Url {
         Write-Host "OK $Name returned HTTP $($response.StatusCode)"
     }
     catch {
-        Write-Host "FAIL $Name: $($_.Exception.Message)"
+        Write-Host "FAIL ${Name}: $($_.Exception.Message)"
         exit 1
     }
 }
